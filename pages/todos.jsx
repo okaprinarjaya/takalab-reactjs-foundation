@@ -93,7 +93,13 @@ function TodoItem({ todo }) {
         onChange={() => dispatch({ type: 'completed', payload: todo.id })}
       />
       <input type="text" defaultChecked={todo.text} />
-      <button type="button" onClick={() => dispatch({ type: 'delete', payload: todo.id })}>Delete</button>
+
+      <button
+        type="button"
+        onClick={() => dispatch({ type: 'delete', payload: todo.id })}
+      >
+        Delete
+      </button>
     </div>
   );
 }
