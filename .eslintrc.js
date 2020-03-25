@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    jest: true
   },
   extends: ["plugin:react/recommended", "airbnb"],
   globals: {
@@ -22,5 +23,6 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/forbid-prop-types": "off",
     "comma-dangle": ["error", "never"],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}]
   },
 };

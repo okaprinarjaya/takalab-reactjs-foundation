@@ -62,7 +62,9 @@ function About() {
   if (loading) {
     return (
       <div>
-        <div>About Us</div>
+        <div>
+          About Us
+        </div>
         <div>
           Network status:
           {networkStatus}
@@ -89,9 +91,7 @@ function About() {
         <p>Result fetching: </p>
 
         <ul>
-          {
-          launchuxes.map((launch) => <li key={launch.id}>{launch.site}</li>)
-}
+          {launchuxes.map((launch) => <li key={launch.id}>{launch.site}</li>)}
         </ul>
 
         <input
