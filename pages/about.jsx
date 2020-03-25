@@ -78,16 +78,20 @@ function About() {
     <MyContext.Provider value={launchuxes}>
       <div>
         <div>About Usop ayam cuks</div>
+
         <div>
           Network status:
           {networkStatus}
         </div>
+
         <Benyo />
+
         <p>Result fetching: </p>
+
         <ul>
           {
           launchuxes.map((launch) => <li key={launch.id}>{launch.site}</li>)
-        }
+}
         </ul>
 
         <input
