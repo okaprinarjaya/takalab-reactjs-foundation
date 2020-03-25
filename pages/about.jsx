@@ -50,6 +50,7 @@ function About() {
   } = useQuery(
     ALL_LAUNCHES_QUERY,
     {
+
       variables: { pageSize: 3 },
       notifyOnNetworkStatusChange: true
     }

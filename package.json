@@ -7,13 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .jsx,.js",
-    "lint:fix": "eslint --fix . --ext .jsx,.js",
     "test": "jest --bail --collectCoverage",
     "test:ci": "jest --bail --ci"
   },
   "lint-staged": {
     "*.+(jsx|js)": [
-      "eslint --fix"
+      "eslint"
     ]
   },
   "husky": {
