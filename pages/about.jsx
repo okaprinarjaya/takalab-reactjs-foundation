@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { withApollo } from '../lib/apollo';
 
 import Nyukro from '../components/nyukro';
+import SebuahModule from '../components/SebuahModule';
 
 export const ALL_LAUNCHES_QUERY = gql`
   query Jancuxes($pageSize: Int!) {
@@ -88,6 +89,7 @@ function About() {
         </div>
 
         <Benyo />
+        <SebuahModule />
 
         <p>Result fetching: </p>
 
