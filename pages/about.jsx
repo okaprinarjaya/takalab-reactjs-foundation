@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import { withApollo } from '../lib/apollo';
 
-import Nyukro from '../components/nyukro';
+import Nyukro from '../components/Nyukro';
 import SebuahModule from '../components/SebuahModule';
 
 export const ALL_LAUNCHES_QUERY = gql`
