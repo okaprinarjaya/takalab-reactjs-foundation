@@ -1,7 +1,31 @@
 import {
-  createContext, useReducer, useContext, useEffect
+  createContext, useReducer, useContext
 } from 'react';
 import PropTypes from 'prop-types';
+
+export async function getServerSideProps() {
+  const data = [
+    {
+      id: '123',
+      task: 'Lorem ipsum lorreem ipsum dolor sit amer hahaha hihihi',
+      completed: false
+    },
+    {
+      id: '456',
+      task: 'The brown fox jump around hakkk hak hakk jump around!',
+      completed: false
+    },
+    {
+      id: '789',
+      task: 'Rocket science for the students!',
+      completed: false
+    }
+  ];
+
+  return {
+    props: { data }
+  };
+}
 
 function appReducer(state, action) {
   switch (action.type) {
@@ -37,17 +61,17 @@ function appReducer(state, action) {
 
 const MyContext = createContext();
 
-export default function TodosApp() {
-  const [state, dispatch] = useReducer(appReducer, []);
+export default function TodosApp({ data }) {
+  const [state, dispatch] = useReducer(appReducer, data);
 
-  useEffect(() => {
-    const todosRaw = localStorage.getItem('todos');
-    dispatch({ type: 'reset', payload: JSON.parse(todosRaw) || [] });
-  }, []);
+  // useEffect(() => {
+  //   const todosRaw = localStorage.getItem('todos');
+  //   dispatch({ type: 'reset', payload: JSON.parse(todosRaw) || [] });
+  // }, []);
 
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(state));
-  }, [state]);
+  // useEffect(() => {
+  //   localStorage.setItem('todos', JSON.stringify(state));
+  // }, [state]);
 
   return (
     <MyContext.Provider value={dispatch}>
@@ -63,6 +87,10 @@ export default function TodosApp() {
     </MyContext.Provider>
   );
 }
+
+TodosApp.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
 function TodosList({ items }) {
   return (
@@ -92,7 +120,7 @@ function TodoItem({ todo }) {
         checked={todo.completed}
         onChange={() => dispatch({ type: 'completed', payload: todo.id })}
       />
-      <input type="text" defaultChecked={todo.text} />
+      <input type="text" defaultValue={todo.task} />
 
       <button
         type="button"

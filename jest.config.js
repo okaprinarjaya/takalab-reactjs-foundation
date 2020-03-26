@@ -7,11 +7,11 @@ module.exports = {
     '!**/node_modules/**',
     '!**/coverage/**'
   ],
-  setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/', '/coverage/'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-    '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js'
+    '^.+\\.css$': '<rootDir>/src/config/jest/cssTransform.js'
   },
   transformIgnorePatterns: [
     '/node_modules/',
