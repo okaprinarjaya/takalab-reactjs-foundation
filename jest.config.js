@@ -7,7 +7,7 @@ module.exports = {
     '!**/node_modules/**',
     '!**/coverage/**'
   ],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/config/jest/setupTests.js'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/', '/coverage/'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
