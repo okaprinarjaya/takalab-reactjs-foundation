@@ -5,7 +5,8 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Link from 'next/link';
 
-import { withApollo } from '../lib/apollo';
+import { withApollo } from '../graphql/apollo';
+import { useCreateTodoMutation } from '../graphql/modules/example-todo/mutations.remote';
 
 import Nyukro from '../components/Nyukro';
 import SebuahModule from '../components/SebuahModule';
@@ -58,8 +59,10 @@ function About() {
   );
 
   const [state, setState] = useState({ id: '', renameText: '' });
+  const [newTodo, setNewTodo] = useState('');
   const opts = { variables: { id: state.id, text: state.renameText } };
   const [faakkk] = useMutation(LOCAL_RENAME, opts);
+  const { createNewTodo } = useCreateTodoMutation({ title: newTodo });
 
   if (loading) {
     return (
@@ -90,6 +93,12 @@ function About() {
 
         <Benyo />
         <SebuahModule />
+
+        <div>
+          <input type="text" defaultValue={newTodo} onChange={(evt) => setNewTodo(evt.target.value)} />
+          <br />
+          <button type="button" onClick={createNewTodo}>Add Todo</button>
+        </div>
 
         <p>Result fetching: </p>
 
