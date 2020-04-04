@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import Link from 'next/link';
 
 import { withApollo } from '../graphql/apollo';
-import { useCreateTodoMutation } from '../graphql/modules/example-todo/mutations.remote';
+import { useCreateTodoMutation, useSetTodoCompleteMutation } from '../graphql/modules/example-todo/mutations.remote';
 
 import Nyukro from '../components/Nyukro';
 import SebuahModule from '../components/SebuahModule';
@@ -60,9 +60,11 @@ function About() {
 
   const [state, setState] = useState({ id: '', renameText: '' });
   const [newTodo, setNewTodo] = useState('');
+  const [todoId, setTodoId] = useState('');
   const opts = { variables: { id: state.id, text: state.renameText } };
   const [faakkk] = useMutation(LOCAL_RENAME, opts);
   const { createNewTodo } = useCreateTodoMutation({ title: newTodo });
+  const { updateTodoComplete } = useSetTodoCompleteMutation(parseInt(todoId, 10));
 
   if (loading) {
     return (
@@ -95,9 +97,17 @@ function About() {
         <SebuahModule />
 
         <div>
+          <p>ADD TODO</p>
           <input type="text" defaultValue={newTodo} onChange={(evt) => setNewTodo(evt.target.value)} />
           <br />
           <button type="button" onClick={createNewTodo}>Add Todo</button>
+        </div>
+
+        <div>
+          <p>SET TODO COMPLETE / INCOMPLETE</p>
+          <input type="text" defaultValue={todoId} onChange={(evt) => setTodoId(evt.target.value)} />
+          <br />
+          <button type="button" onClick={updateTodoComplete}>Todo Complete!</button>
         </div>
 
         <p>Result fetching: </p>
