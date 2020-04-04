@@ -2,7 +2,12 @@
 /* eslint-disable react/jsx-filename-extension */
 import { MockedProvider } from '@apollo/react-testing';
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useCreateTodoMutation, CREATE_TODO } from '../mutations.remote';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+
+import { useCreateTodoMutation, CREATE_TODO, TODOS_LOCAL_QUERY } from '../mutations.remote';
+import initialCache from './cache.json';
+
+const cache = new InMemoryCache({ addTypename: false }).restore(initialCache);
 
 const mocking = {
   request: {
@@ -15,6 +20,7 @@ const mocking = {
         success: true,
         message: 'New todo item successfuly created',
         todo: {
+          id: 1,
           title: 'Online standup meeeting because of WFH',
           color: 'default',
           completed: false
@@ -24,9 +30,20 @@ const mocking = {
   }
 };
 
+const mocking2 = {
+  request: {
+    query: TODOS_LOCAL_QUERY
+  },
+  result: {
+    data: {
+      todos: []
+    }
+  }
+};
+
 function getHookWrapper(mocks = []) {
   const wrapper = ({ children }) => (
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider mocks={mocks} addTypename={false} cache={cache}>
       {children}
     </MockedProvider>
   );
@@ -44,7 +61,7 @@ it('Should test test hehehe test!', () => {
 
 
 it('Should tast test tost!', async () => {
-  const { result, waitForNextUpdate } = getHookWrapper([mocking]);
+  const { result, waitForNextUpdate } = getHookWrapper([mocking, mocking2]);
 
   act(() => {
     result.current.createNewTodo();

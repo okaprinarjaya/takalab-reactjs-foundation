@@ -23,6 +23,7 @@ export const SET_TODO_COMPLETE = gql`
       success
       message
       todo {
+        id
         title
         color
         completed
@@ -37,6 +38,7 @@ export const SET_TODO_INCOMPLETE = gql`
       success
       message
       todo {
+        id
         title
         color
         completed
@@ -45,7 +47,7 @@ export const SET_TODO_INCOMPLETE = gql`
   }
 `;
 
-const TODOS_LOCAL_QUERY = gql`
+export const TODOS_LOCAL_QUERY = gql`
   query Todos {
     todos {
       id
