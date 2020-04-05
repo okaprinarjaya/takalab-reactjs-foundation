@@ -5,7 +5,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'isomorphic-unfetch';
 
-import { renameAjah } from './modules/example-todo/mutations.local';
+import {
+  renameTodoTitleLocalMutation
+} from './modules/example-todo/mutations.local';
 
 export default function createApolloClient(initialState, ctx) {
   // The `ctx` (NextPageContext) will only be present on the server.
@@ -20,7 +22,7 @@ export default function createApolloClient(initialState, ctx) {
     cache: new InMemoryCache().restore(initialState),
     resolvers: {
       Mutation: {
-        renameAjah
+        renameTodoTitleLocalMutation
       }
     }
   });

@@ -48,7 +48,7 @@ function getHookWrapper(mocks = []) {
     </MockedProvider>
   );
 
-  const { result, waitForNextUpdate } = renderHook(() => useCreateTodoMutation({ title: 'Makan' }), { wrapper });
+  const { result, waitForNextUpdate } = renderHook(() => useCreateTodoMutation(), { wrapper });
   return { result, waitForNextUpdate };
 }
 
@@ -64,7 +64,7 @@ it('Should tast test tost!', async () => {
   const { result, waitForNextUpdate } = getHookWrapper([mocking, mocking2]);
 
   act(() => {
-    result.current.createNewTodo();
+    result.current.createNewTodo('Makan');
   });
 
   await waitForNextUpdate();

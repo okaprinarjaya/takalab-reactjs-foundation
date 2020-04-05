@@ -47,6 +47,21 @@ export const SET_TODO_INCOMPLETE = gql`
   }
 `;
 
+export const RENAME_TODO_TITLE = gql`
+  mutation RenameTodoTitle($todoId: Int! $newTitleText: String!) {
+    renameTodoTitle(todoId: $todoId newTitleText: $newTitleText) {
+      success
+      message
+      todo {
+        id
+        title
+        color
+        completed
+      }
+    }
+  }
+`;
+
 export const TODOS_LOCAL_QUERY = gql`
   query Todos {
     todos {
@@ -58,7 +73,7 @@ export const TODOS_LOCAL_QUERY = gql`
   }
 `;
 
-export const useCreateTodoMutation = ({ title }) => {
+export const useCreateTodoMutation = () => {
   const [createTodo, { data }] = useMutation(CREATE_TODO, {
     update: (cache, { data: { createTodo: newTodo } }) => {
       const { todos } = cache.readQuery({ query: TODOS_LOCAL_QUERY });
@@ -69,20 +84,31 @@ export const useCreateTodoMutation = ({ title }) => {
     }
   });
 
-  const createNewTodo = useCallback(() => createTodo({ variables: { title } }));
+  const createNewTodo = useCallback((title) => createTodo({ variables: { title } }));
   return { createNewTodo, data };
 };
 
-export const useSetTodoCompleteMutation = (todoId) => {
+export const useSetTodoCompleteMutation = () => {
   const [setTodoComplete, { data }] = useMutation(SET_TODO_COMPLETE);
-  const updateTodoComplete = useCallback(() => setTodoComplete({ variables: { todoId } }));
+  const updateTodoComplete = useCallback((todoId) => setTodoComplete({ variables: { todoId } }));
 
   return { updateTodoComplete, data };
 };
 
-export const useSetTodoInCompleteMutation = (todoId) => {
+export const useSetTodoInCompleteMutation = () => {
   const [setTodoInComplete, { data }] = useMutation(SET_TODO_INCOMPLETE);
-  const updateTodoInComplete = useCallback(() => setTodoInComplete({ variables: { todoId } }));
+  const updateTodoInComplete = useCallback((todoId) => setTodoInComplete(
+    { variables: { todoId } }
+  ));
 
   return { updateTodoInComplete, data };
+};
+
+export const useRenameTodoTitleMutation = () => {
+  const [renameTodoTitleCallback, { data }] = useMutation(RENAME_TODO_TITLE);
+  const renameTodoTitle = useCallback((todoId, newTitleText) => renameTodoTitleCallback(
+    { variables: { todoId, newTitleText } }
+  ));
+
+  return { renameTodoTitle, data };
 };

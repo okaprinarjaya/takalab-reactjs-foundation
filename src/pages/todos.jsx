@@ -8,46 +8,20 @@ import PropTypes from 'prop-types';
 import { withApollo } from '../graphql/apollo';
 
 import { useTodosQuery } from '../graphql/modules/example-todo/queries.remote';
-import { useCreateTodoMutation } from '../graphql/modules/example-todo/mutations.remote';
-
-// function appReducer(state, action) {
-//   switch (action.type) {
-//     case 'reset': {
-//       return action.payload;
-//     }
-//     case 'add': {
-//       return [
-//         ...state,
-//         {
-//           id: Date.now(),
-//           title: '',
-//           completed: false
-//         }
-//       ];
-//     }
-//     case 'delete': {
-//       return state.filter((item) => item.id !== action.payload);
-//     }
-//     case 'completed': {
-//       return state.map((item) => {
-//         if (item.id === action.payload) {
-//           return { ...item, completed: !item.completed };
-//         }
-//         return item;
-//       });
-//     }
-//     default: {
-//       return state;
-//     }
-//   }
-// }
+import { useRenameTodoTitleLocalMutation } from '../graphql/modules/example-todo/mutations.local';
+import {
+  useCreateTodoMutation,
+  useRenameTodoTitleMutation,
+  useSetTodoCompleteMutation,
+  useSetTodoInCompleteMutation
+} from '../graphql/modules/example-todo/mutations.remote';
 
 const MyContext = createContext();
 
 function TodosApp() {
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const { data: graphqlData, loading } = useTodosQuery();
-  const { createNewTodo } = useCreateTodoMutation({ title: newTodoTitle });
+  const { createNewTodo } = useCreateTodoMutation();
 
   return (
     <MyContext.Provider value={(_) => _}>
@@ -60,7 +34,7 @@ function TodosApp() {
           style={{ width: '375px' }}
           onChange={(evt) => setNewTodoTitle(evt.target.value)}
         />
-        <button type="button" onClick={createNewTodo}>Add todo</button>
+        <button type="button" onClick={() => createNewTodo(newTodoTitle)}>Add todo</button>
 
         {
           !loading && graphqlData && graphqlData.todos.length > 0
@@ -71,10 +45,6 @@ function TodosApp() {
     </MyContext.Provider>
   );
 }
-
-// TodosApp.propTypes = {
-//   data: PropTypes.arrayOf(PropTypes.object).isRequired
-// };
 
 function TodosList({ items }) {
   return (
@@ -90,6 +60,11 @@ TodosList.propTypes = {
 
 function TodoItem({ todo }) {
   const dispatch = useContext(MyContext);
+  // const [title, setTitle] = useState(todo.title);
+  const { renameTodoTitle } = useRenameTodoTitleMutation();
+  const { updateTodoComplete } = useSetTodoCompleteMutation();
+  const { updateTodoInComplete } = useSetTodoInCompleteMutation();
+  const [renameTodoTitleLocal] = useRenameTodoTitleLocalMutation();
 
   return (
     <div style={{
@@ -102,9 +77,27 @@ function TodoItem({ todo }) {
       <input
         type="checkbox"
         checked={todo.completed}
-        onChange={() => dispatch({ type: 'completed', payload: todo.id })}
+        onChange={(evt) => {
+          if (evt.target.checked) {
+            updateTodoComplete(parseInt(todo.id, 10));
+          } else {
+            updateTodoInComplete(parseInt(todo.id, 10));
+          }
+        }}
       />
-      <input type="text" defaultValue={todo.title} style={{ width: '375px' }} />
+      <input
+        type="text"
+        defaultValue={todo.title}
+        onChange={(evt) => renameTodoTitleLocal(todo.id, evt.target.value)}
+        style={{ width: '375px' }}
+      />
+
+      <button
+        type="button"
+        onClick={() => renameTodoTitle(parseInt(todo.id, 10), todo.title)}
+      >
+        Update
+      </button>
 
       <button
         type="button"
