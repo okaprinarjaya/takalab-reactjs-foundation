@@ -17,6 +17,21 @@ export const CREATE_TODO = gql`
   }
 `;
 
+export const DELETE_TODO = gql`
+  mutation DeleteTodoMutation($todoId: Int!) {
+    deleteTodo(todoId: $todoId) {
+      success
+      message
+      todo {
+        id
+        title
+        color
+        completed
+      }
+    }
+  }
+`;
+
 export const SET_TODO_COMPLETE = gql`
   mutation SetTodoCompleteMutation($todoId: Int!) {
     setTodoComplete(todoId: $todoId) {
@@ -86,6 +101,21 @@ export const useCreateTodoMutation = () => {
 
   const createNewTodo = useCallback((title) => createTodo({ variables: { title } }));
   return { createNewTodo, data };
+};
+
+export const useDeleteTodoMutation = () => {
+  const [deleteTodoCallback, { data }] = useMutation(DELETE_TODO, {
+    update: (cache, { data: { deleteTodo } }) => {
+      const { todos } = cache.readQuery({ query: TODOS_LOCAL_QUERY });
+      cache.writeQuery({
+        query: TODOS_LOCAL_QUERY,
+        data: { todos: todos.filter((todo) => todo.id !== deleteTodo.todo.id) }
+      });
+    }
+  });
+
+  const deleteTodo = useCallback((todoId) => deleteTodoCallback({ variables: { todoId } }));
+  return { deleteTodo, data };
 };
 
 export const useSetTodoCompleteMutation = () => {

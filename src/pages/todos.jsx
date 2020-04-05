@@ -11,6 +11,7 @@ import { useTodosQuery } from '../graphql/modules/example-todo/queries.remote';
 import { useRenameTodoTitleLocalMutation } from '../graphql/modules/example-todo/mutations.local';
 import {
   useCreateTodoMutation,
+  useDeleteTodoMutation,
   useRenameTodoTitleMutation,
   useSetTodoCompleteMutation,
   useSetTodoInCompleteMutation
@@ -61,6 +62,7 @@ TodosList.propTypes = {
 function TodoItem({ todo }) {
   const dispatch = useContext(MyContext);
   // const [title, setTitle] = useState(todo.title);
+  const { deleteTodo } = useDeleteTodoMutation();
   const { renameTodoTitle } = useRenameTodoTitleMutation();
   const { updateTodoComplete } = useSetTodoCompleteMutation();
   const { updateTodoInComplete } = useSetTodoInCompleteMutation();
@@ -78,6 +80,7 @@ function TodoItem({ todo }) {
         type="checkbox"
         checked={todo.completed}
         onChange={(evt) => {
+          dispatch();
           if (evt.target.checked) {
             updateTodoComplete(parseInt(todo.id, 10));
           } else {
@@ -101,7 +104,7 @@ function TodoItem({ todo }) {
 
       <button
         type="button"
-        onClick={() => dispatch({ type: 'delete', payload: todo.id })}
+        onClick={() => deleteTodo(parseInt(todo.id, 10))}
       >
         Delete
       </button>

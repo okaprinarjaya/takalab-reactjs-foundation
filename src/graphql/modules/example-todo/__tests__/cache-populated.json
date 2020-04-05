@@ -1,0 +1,45 @@
+{
+  "ROOT_QUERY": {
+    "todos": [
+      {
+        "generated": false,
+        "id": "Todo:1",
+        "type": "id",
+        "typename": "Todo"
+      },
+      {
+        "generated": false,
+        "id": "Todo:2",
+        "type": "id",
+        "typename": "Todo"
+      },
+      {
+        "generated": false,
+        "id": "Todo:3",
+        "type": "id",
+        "typename": "Todo"
+      }
+    ]
+  },
+  "Todo:1": {
+    "__typename": "Todo",
+    "color": "default",
+    "completed": false,
+    "id": 1,
+    "title": "Makan"
+  },
+  "Todo:2": {
+    "__typename": "Todo",
+    "color": "default",
+    "completed": false,
+    "id": 2,
+    "title": "Minum"
+  },
+  "Todo:3": {
+    "__typename": "Todo",
+    "color": "default",
+    "completed": false,
+    "id": 3,
+    "title": "Sembahyang di Merajan"
+  }
+}
