@@ -19,7 +19,7 @@ import {
 
 const MyContext = createContext();
 
-function TodosApp() {
+export function TodosApp() {
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const { data: graphqlData, loading } = useTodosQuery();
   const { createNewTodo } = useCreateTodoMutation();
@@ -31,16 +31,23 @@ function TodosApp() {
 
         <input
           type="text"
+          aria-label="add-new-todo-input"
           defaultValue={newTodoTitle}
           style={{ width: '375px' }}
           onChange={(evt) => setNewTodoTitle(evt.target.value)}
         />
-        <button type="button" onClick={() => createNewTodo(newTodoTitle)}>Add todo</button>
+        <button
+          aria-label="add-new-todo-button"
+          type="button"
+          onClick={() => createNewTodo(newTodoTitle)}
+        >
+          Add todo
+        </button>
 
         {
           !loading && graphqlData && graphqlData.todos.length > 0
             ? <TodosList items={graphqlData.todos} />
-            : null
+            : <p>Loading todos...</p>
         }
       </div>
     </MyContext.Provider>
@@ -69,14 +76,17 @@ function TodoItem({ todo }) {
   const [renameTodoTitleLocal] = useRenameTodoTitleLocalMutation();
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-betweeen',
-      marginBottom: '5px'
-    }}
+    <div
+      className="todo-item"
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-betweeen',
+        marginBottom: '5px'
+      }}
     >
       <input
+        data-testid={`todo-item-${todo.id}`}
         type="checkbox"
         checked={todo.completed}
         onChange={(evt) => {
